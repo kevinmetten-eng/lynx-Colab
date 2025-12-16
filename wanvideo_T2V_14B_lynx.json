@@ -158,7 +158,7 @@
       "outputs": [],
       "properties": {},
       "widgets_values": [
-        "Model links:\n\n[https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/tree/main/](https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/tree/main/)\n\nLoRA:\n\n[https://huggingface.co/Kijai/WanVideo_comfy/tree/main/Lightx2v](https://huggingface.co/Kijai/WanVideo_comfy/tree/main/Lightx2v)\n\nText encoder:\n\n[https://huggingface.co/Kijai/WanVideo_comfy/blob/main/umt5-xxl-enc-bf16.safetensors](https://huggingface.co/Kijai/WanVideo_comfy/blob/main/umt5-xxl-enc-bf16.safetensors)\n\nVAE:\n\n[https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1_VAE_bf16.safetensors](https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1_VAE_bf16.safetensors)\n\nLynx models:\n\n[https://huggingface.co/Kijai/WanVideo_comfy/tree/main/Lynx](https://huggingface.co/Kijai/WanVideo_comfy/tree/main/Lynx)"
+        "Model links:\n\n- Wan2.1-T2V-14B GGUF (Q4_K_M, CUDA): https://huggingface.co/city96/Wan2.1-T2V-14B-gguf/resolve/main/wan2.1-t2v-14b-Q4_K_M.gguf\n- Text encoder (non-scaled FP8): https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn.safetensors\n- VAE: https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors\n\nLynx (GGUF + resampler):\n- Lite IP (Q8_0): https://huggingface.co/vantagewithai/Lynx-GGUF/resolve/main/lite_ip/Wan2_1-T2V-14B-Lynx_lite_ip_layers_Q8_0.gguf\n- Full Ref (Q8_0): https://huggingface.co/vantagewithai/Lynx-GGUF/resolve/main/full_ref/Wan2_1-T2V-14B-Lynx_full_ref_layers_Q8_0.gguf\n- Resampler FP32: https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Lynx/lynx_full_resampler_fp32.safetensors\n\nLoRA:\n- Lightx2v: https://huggingface.co/lightx2v/Wan2.1-T2V-14B-StepDistill-CfgDistill-Lightx2v/resolve/main/loras/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank64.safetensors\n"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -1288,7 +1288,7 @@
         "umt5_xxl_fp8_e4m3fn.safetensors",
         "bf16",
         "a beautiful white woman with black hair, thin body, and huge natural breasts is laying in bed seductively while looking directly at viewer.",
-        "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+        "\u8272\u8c03\u8273\u4e3d\uff0c\u8fc7\u66dd\uff0c\u9759\u6001\uff0c\u7ec6\u8282\u6a21\u7cca\u4e0d\u6e05\uff0c\u5b57\u5e55\uff0c\u98ce\u683c\uff0c\u4f5c\u54c1\uff0c\u753b\u4f5c\uff0c\u753b\u9762\uff0c\u9759\u6b62\uff0c\u6574\u4f53\u53d1\u7070\uff0c\u6700\u5dee\u8d28\u91cf\uff0c\u4f4e\u8d28\u91cf\uff0cJPEG\u538b\u7f29\u6b8b\u7559\uff0c\u4e11\u964b\u7684\uff0c\u6b8b\u7f3a\u7684\uff0c\u591a\u4f59\u7684\u624b\u6307\uff0c\u753b\u5f97\u4e0d\u597d\u7684\u624b\u90e8\uff0c\u753b\u5f97\u4e0d\u597d\u7684\u8138\u90e8\uff0c\u7578\u5f62\u7684\uff0c\u6bc1\u5bb9\u7684\uff0c\u5f62\u6001\u7578\u5f62\u7684\u80a2\u4f53\uff0c\u624b\u6307\u878d\u5408\uff0c\u9759\u6b62\u4e0d\u52a8\u7684\u753b\u9762\uff0c\u6742\u4e71\u7684\u80cc\u666f\uff0c\u4e09\u6761\u817f\uff0c\u80cc\u666f\u4eba\u5f88\u591a\uff0c\u5012\u7740\u8d70",
         "disabled",
         true,
         "gpu"
@@ -1378,7 +1378,7 @@
         "wan2.1-t2v-14b-Q4_K_M.gguf",
         "fp16",
         "disabled",
-        "main_device",
+        "cuda",
         "sageattn",
         "default"
       ],
@@ -1415,12 +1415,12 @@
         "Node name for S&R": "WanVideoTorchCompileSettings"
       },
       "widgets_values": [
-        "inductor",
+        "none",
         false,
         "default",
         false,
         64,
-        true,
+        false,
         128,
         false,
         false
