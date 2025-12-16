@@ -7,7 +7,6 @@ import os
 import torch
 import numpy as np
 
-from PIL import Image
 from diffusers import UniPCMultistepScheduler
 
 from modules.common.inference_utils import SubjectInfo, VideoStyleInfo, dtype_mapping
@@ -41,10 +40,6 @@ class LynxWanInfer():
             self.pipe = pipe
 
         assert self.pipe, "Init pipeline failed!"
-
-        logger.info("Initializing NSFW classifier")
-        from transformers import pipeline
-        self.nsfw_classifier = pipeline("image-classification", model="Falconsai/nsfw_image_detection")
 
     def generate_t2v(
         self,
@@ -102,39 +97,19 @@ class LynxWanInfer():
             attention_kwargs_uncond={"ip_hidden_states": ip_hidden_states_uncond, "ip_scale": style_info.ip_scale, "ref_buffer": ref_buffer_uncond, "ref_scale": style_info.ref_scale},
         ).frames[0]
 
-        # Safety check
-        logger.info("Running first NSFW classifier")
-        nsfw_scores = []
-        for frame in result_frames:
-            for item in self.nsfw_classifier(frame):
-                if item['label'] == 'nsfw':
-                    nsfw_score = item['score']
-            nsfw_scores.append(nsfw_score)
-        nsfw_score = max(nsfw_scores)
-        
-        logger.info("Running second NSFW classifier")
-        import tensorflow as tf
-        tf.config.set_visible_devices([], 'GPU')
-        import opennsfw2 as n2
-        nsfw_scores2 = n2.predict_images(result_frames)
-        nsfw_score2 = max(nsfw_scores2)
-        
-        if nsfw_score >= 0.85 or nsfw_score2 >= 0.75:
-            logger.warning("NSFW detected! Not saving video")
-        else:
-            result_frames = np.array(result_frames)
-            out_video_name = "{sub}/{style}-fr{frame}-s{seed}.{ext}".format(
-                sub=subject_info.name,
-                style=style_info.style_name,
-                frame=style_info.num_frames,
-                seed=style_info.seed,
-                ext=ext
-            )
+        result_frames = np.array(result_frames)
+        out_video_name = "{sub}/{style}-fr{frame}-s{seed}.{ext}".format(
+            sub=subject_info.name,
+            style=style_info.style_name,
+            frame=style_info.num_frames,
+            seed=style_info.seed,
+            ext=ext
+        )
 
-            out_video_path = os.path.join(output_dir, out_video_name)
-            os.makedirs(os.path.dirname(out_video_path), exist_ok=True)
+        out_video_path = os.path.join(output_dir, out_video_name)
+        os.makedirs(os.path.dirname(out_video_path), exist_ok=True)
 
-            self._export_video(result_frames, out_video_path, fps)
+        self._export_video(result_frames, out_video_path, fps)
 
     @staticmethod
     def load_pipeline_and_models(
